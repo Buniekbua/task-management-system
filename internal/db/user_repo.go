@@ -35,7 +35,7 @@ func (r *UserRepository) CreateUser(user *models.User) error {
 
 func (r *UserRepository) GetUserByID(id int) (*models.User, error) {
 	var user models.User
-	query := "SELECT * FROM users WHERE id=$1"
+	query := "SELECT * FROM users WHERE user_id=$1"
 	err := r.db.Get(&user, query, id)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -65,7 +65,7 @@ func (r *UserRepository) UpdateUser(id int, user *models.User) error {
 }
 
 func (r *UserRepository) DeleteUser(id int) error {
-	query := "DELETE FROM users WHERE id=$1"
+	query := "DELETE FROM users WHERE user_id=$1"
 	_, err := r.db.Exec(query, id)
 	if err != nil {
 		return &DBError{
