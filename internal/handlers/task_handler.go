@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -19,11 +20,13 @@ func NewTaskHandler(taskUseCase usecase.TaskUseCase) *TaskHandler {
 
 func (h *TaskHandler) CreateTaskHandler(c echo.Context) error {
 	var task models.Task
+
 	if err := c.Bind(&task); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request body"})
 	}
 
 	if err := h.taskUseCase.CreateTask(&task); err != nil {
+		fmt.Println(err)
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Error creating task"})
 	}
 	return c.JSON(http.StatusCreated, task)

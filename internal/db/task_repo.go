@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/buniekbua/task-managment-system/internal/models"
+	"github.com/buniekbua/task-managment-system/util"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -33,7 +34,7 @@ func (r *TaskRepository) CreateTask(task *models.Task) error {
 	VALUES ($1, $2, $3, $4, $5, $6)
 	RETURNING task_id
 	`
-	err := r.db.QueryRow(query, task.UserID, task.TaskName, task.Description, task.DueDate, task.Priority, time.Now()).Scan(&task.TaskID)
+	err := r.db.QueryRow(query, task.UserID, task.TaskName, task.Description, util.StrToDate(task.DueDate), task.Priority, time.Now()).Scan(&task.TaskID)
 	if err != nil {
 		return &DBError{
 			Err: err,
@@ -71,7 +72,7 @@ func (r *TaskRepository) UpdateTask(id int, task *models.Task) error {
 		SET task_name = $2, description = $3, due_date = $4, priority = $5
 		WHERE task_id = $1
 	`
-	_, err := r.db.Exec(query, id, task.TaskName, task.Description, task.DueDate, task.Priority)
+	_, err := r.db.Exec(query, id, task.TaskName, task.Description, util.StrToDate(task.DueDate), task.Priority)
 	if err != nil {
 		return &DBError{
 			Err: err,
