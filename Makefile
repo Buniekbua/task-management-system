@@ -8,9 +8,9 @@ dropdb:
 	docker exec -it postgres16 dropdb task_managment_db
 
 migrateup:
-	migrate -path internal/db/migration -database "postgresql://root:password@localhost:5432/task_managment_db?sslmode=disable" -verbose up
+	migrate -path migrations -database "postgresql://root:password@localhost:5432/task_managment_db?sslmode=disable" -verbose up
 
 migratedown:
-	migrate -path internal/db/migration -database "postgresql://root:password@localhost:5432/task_managment_db?sslmode=disable" -verbose down
+	migrate -path migrations -database "postgresql://root:password@localhost:5432/task_managment_db?sslmode=disable" -verbose down
 
 .PHONY: postgres createdb dropdb migrateup migratedown
